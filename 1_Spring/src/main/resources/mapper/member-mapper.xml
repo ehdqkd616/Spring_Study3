@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespace : 연결하고 싶은 mapper를 구분하는 속성 -->
+<!-- mybatis-config.xml에서 mapper 등록 -->
+<mapper namespace="memberMapper">
+	<select id="memberLogin" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE ID=#{id}
+			  AND M_STATUS='Y'			
+	</select>
+	<resultMap type="Member" id="memberResultSet">
+		<id column="ID" property="id" />
+		<result column="PWD" property="pwd" />
+		<result column="NAME" property="name" />
+		<result column="EMAIL" property="email" />
+		<result column="GENDER" property="gender" />
+		<result column="AGE" property="age" />
+		<result column="PHONE" property="phone" />
+		<result column="ADDRESS" property="address" />
+		<result column="ENROLLDATE" property="enrollDate" />
+		<result column="UPDATEDATE" property="updateDate" />
+		<result column="M_STATUS" property="mStatus" />	
+	</resultMap>
+
+	<insert id="insertMember" parameterType="Member">
+		INSERT INTO MEMBER VALUES(#{id}, #{pwd}, #{name}, #{email}, #{gender}, 
+								  #{age}, #{phone}, #{address}, sysdate, sysdate, default)
+	</insert>
+	
+	<update id="updateMember" parameterType="Member">
+		UPDATE MEMBER 
+		SET NAME = #{name}, EMAIL = #{email}, GENDER = #{gender}, AGE = #{age}, 
+			PHONE = #{phone}, ADDRESS = #{address}, UPDATE_DATE = SYSDATE
+		WHERE ID=#{id}
+	</update>
+	
+	<update id="updatePwd" parameterType="map">
+		UPDATE MEMBER 
+		SET PWD = #{newPwd}
+		WHERE ID = #{id}
+	</update>	
+
+	<update id="deleteMember" >
+		UPDATE MEMBER 
+		SET M_STATUS = 'N'
+		WHERE ID = #{id}
+	</update>
+	
+	<select id="checkIdDup" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE ID=#{id}
+	</select>
+
+</mapper>

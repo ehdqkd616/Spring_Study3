@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0 EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace : 연결하고 싶은 mapper를 구분하는 속성 -->
+<!-- mybatis-config.xml에서 mapper 등록 -->
+<mapper namespace="memberMapper">
+	<!-- 
+		select가 여러 개일 때 어떤 select를 가져올 지 구분할 떄, id로 구분해서 불러옴(이름)
+		쿼리문 대소문자 안가림, 여러 줄에 써도 상관없음
+		Member vo에서 받아오는 파라미터 변수를 가져옴 => parameterType : 값을 받아오는 파라미터타입 작성(풀네임)
+		resultType : 쿼리의 결과값에 대한 타입 적어줌(풀네임)
+	-->
+	<select id="loginMember" parameterType="member.model.vo.Member" resultMap="memberResultSet">
+		select * 
+		from member
+		where user_id=#{userId} and user_pwd=#{userPwd} and m_status='Y'
+	</select>
+	<resultMap type="Member" id="memberResultSet">
+		<id property="userId" column="USER_ID" />			<!-- DB 기본키 -->
+		<result property="userPwd" column="USER_PWD" />		<!-- DB 일반 컬럼 -->
+		<result property="userName" column="USER_NAME" />
+		<result property="nickName" column="NICKNAME" />
+		<result property="email" column="EMAIL" />
+		<result property="birthDay" column="BIRTHDAY" />
+		<result property="gender" column="GENDER" />
+		<result property="phone" column="PHONE" />
+		<result property="address" column="ADDRESS" />
+		<result property="enrollDate" column="ENROLL_DATE" />
+		<result property="updateDate" column="UPDATE_DATE" />
+		<result property="mStatus" column="M_STATUS" />
+	</resultMap>
+	
+	<select id="selectMember" parameterType="string" resultMap="memberResultSet">
+		select * 
+		from member
+		where user_id=#{userId}		
+	</select>
+	
+	<select id="selectMemberPwd" parameterType="string" resultType="string">
+		select USER_PWD
+		from member
+		where user_id=#{userId}
+	</select>
+	
+	
+	<insert id="insertMember" parameterType="Member">
+		insert into member values(#{userId}, #{userPwd}, #{userName}, #{nickName}, #{email}, 
+		#{birthDay}, #{gender}, #{phone}, #{address}, sysdate, sysdate, default)
+	</insert>
+	
+	<update id="updateMember" parameterType="Member">
+		update member 
+		set USER_NAME = #{userName}, NICKNAME = #{nickName}, EMAIL = #{email}, BIRTHDAY = #{birthDay}, 
+			GENDER = #{gender}, PHONE = #{phone}, ADDRESS = #{address}, UPDATE_DATE = SYSDATE
+		where USER_ID=#{userId}
+	</update>
+	
+	<update id="updateMemberPwd" parameterType="Member">
+		update member set USER_PWD = #{userPwd}
+		where USER_ID=#{userId}
+	</update>	
+	
+	<update id="pwdUpdate" parameterType="map">
+		update member 
+		set user_pwd = #{newPwd}
+		where user_id=#{userId} and user_pwd = #{userPwd}
+		<!-- 파라미터 구분으로 오는 값은 map의 key -->
+	</update>	
+	
+	<update id="deleteMember" parameterType="string">
+		update member 
+		set m_status = 'N'
+		where user_id=#{userId}
+		<!-- 파라미터 구분으로 오는 값은 map의 key -->
+	</update>	
+		
+	
+	
+</mapper>

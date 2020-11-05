@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<!-- LoggerAspect1 빈 등록 -->
+	<bean id="LoggerAspect" class="com.kh.spring.common.aop.LoggerAspect1" />
+
+	<!-- 선언적 AOP 시작 -->
+	<!-- board.. : board 하위 패키지 *(..) : 메소드 -->
+<!-- 	<aop:config> -->
+<!-- 		<aop:aspect id="LoggerAspect" ref="LoggerAspect"> -->
+<!-- 			<aop:pointcut expression="execution(* com.kh.spring.board..*(..))" id="pcForAll" /> -->
+<!-- 			<aop:around method="loggerAdvice" pointcut-ref="pcForAll" /> -->
+<!-- 		</aop:aspect> -->
+<!-- 	</aop:config> -->
+	<!--ref="LoggerAspect" = bean id="LoggerAspect" -->
+	<!-- 선언적 AOP 끝 -->
+</beans>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org/DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+<!-- 
+	태그 순서
+	
+	 "(properties?,settings?,typeAliases?,typeHandlers?,objectFactory?,
+	 objectWrapperFactory?,reflectorFactory?,plugins?,environments?,databaseIdProvider?,mappers?)".
+-->
+
+	<properties resource="/driver.properties" />
+	
+	<!-- 마이바티스와 관련된 기본 세팅 선언 -->
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	
+    <typeAliases>
+       <typeAlias type="member.model.vo.Member" alias="Member"/>   <!-- member.model.vo.Member를 다 쓰지 않아도 된다. -->
+       <typeAlias type="board.model.vo.Board" alias="Board"/>  
+       <typeAlias type="board.model.vo.Reply" alias="Reply"/>  
+       <typeAlias type="board.model.vo.SearchCondition" alias="SearchCondition"/>  
+    </typeAliases>
+	
+	<!-- db에 연결할 설정 정보 선언하는 부분 -->
+	<!-- default : 연결 설정을 여러 개 생성하여 아이디로 구분하고 기본적으로 연결할 설정 정보를 설정하는 속성 -->
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+
+			<!-- 
+				트랜젝션을 제어하기 위한 설정 정보 정확히 말하면 트랜젝션을 누가 관리할 것인가 
+				
+				JDBC 
+					JDBC가 커밋과 롤백을 직접 처리(수동 commit) 
+					
+				MANAGED 
+					트랜잭션에 대해 어떠한 직접적인 영향을 행사하지 않는 것(자동 commit) 컨테이너가 모든 트랜잭션의 생명주기 관리 
+			-->
+			
+			<dataSource type="POOLED">
+				<!-- 
+					실제 DB 접속에 관한 정보들을 넣는 태그 
+					type : ConnectionPool을 사용할 건지 여부 
+					
+					POOLED 커넥션 
+						객체를 미리 만들어놓고 사용하는 설정 객체를 만드는데 시간을 줄일 수 있음 사용자의 요청이 있을 때 db에 연결하여 명령을 실행하고 
+						명령이 종료되어도 pool에 저장하여 요청이 올 떄 꺼내 재사용 ==> Web Application의 방법 
+						
+					UNPOOLED 
+						DB요청이 올떄마다 실시간으로 커넥션 객체를 만들고 닫음 미리 객체를 만들어놓는 방식이 아니므로 조금 느릴 수 있음 JNDI 
+				-->			
+						
+<!-- 			
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver" />
+				<property name="url" value="jdbc:oracle:thin:@localhost:1521/xepdb1" />
+				<property name="username" value="MyBatis" />
+				<property name="password" value="MyBatis" /> 
+-->
+
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />								
+
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- 사용할 mapper 등록 -->
+	<mappers>
+		<mapper resource="/mappers/member-mapper.xml" />
+		<mapper resource="/mappers/board-mapper.xml" />
+	</mappers>
+	
+</configuration>
+

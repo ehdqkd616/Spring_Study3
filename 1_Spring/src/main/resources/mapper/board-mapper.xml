@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespace : 연결하고 싶은 mapper를 구분하는 속성 -->
+<!-- mybatis-config.xml에서 mapper 등록 -->
+<mapper namespace="boardMapper">
+
+	<select id="getListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE B_STATUS = 'Y'
+	</select>
+	
+	<select id="selectList" resultMap="boardResultSet">
+		select * 
+		from board
+		where b_status = 'Y'
+		order by bid desc
+	</select>
+	
+	<resultMap type="Board" id="boardResultSet">
+		<id property="bId" column="BID" />			
+		<result property="bTitle" column="BTITLE" />
+		<result property="bWriter" column="BWRITER" />
+		<result property="bContent" column="BCONTENT" />
+		<result property="originalFileName" column="ORIGINAL_FILENAME" />
+		<result property="renameFileName" column="RENAME_FILENAME" />
+		<result property="bCount" column="BCOUNT" />
+		<result property="bCreateDate" column="B_CREATE_DATE" />
+		<result property="bModifyDate" column="B_MODIFY_DATE" />
+		<result property="bStatus" column="B_STATUS" />
+	</resultMap>
+	
+	<insert id="insertBoard" parameterType="Board">
+		INSERT INTO BOARD 
+		VALUES(SEQ_BID.NEXTVAL, #{bTitle}, #{bWriter}, #{bContent}, #{originalFileName}, #{renameFileName}, 
+				DEFAULT, SYSDATE, SYSDATE, DEFAULT)
+	</insert>
+	
+	<update id="addReadCount" parameterType="_int">
+		UPDATE BOARD
+		SET BCOUNT = BCOUNT + 1
+		WHERE BID = #{bId}
+	</update>
+
+	<select id="selectBoard" parameterType="_int" resultMap="boardResultSet">
+		SELECT *
+		FROM BOARD
+		WHERE B_STATUS = 'Y' AND BID=#{bId}
+	</select>
+	
+	<update id="updateBoard" parameterType="Board">
+		UPDATE BOARD 
+		SET BTITLE=#{bTitle}, BCONTENT=#{bContent}, ORIGINAL_FILENAME=#{originalFileName}, 
+			RENAME_FILENAME=#{renameFileName}, B_MODIFY_DATE=SYSDATE
+		WHERE BID = #{bId}
+	</update>
+	
+	<update id="deleteBoard" parameterType="_int">
+		UPDATE BOARD
+		SET B_STATUS = 'N'
+		WHERE BID = #{bId}
+	</update>	
+	
+	<insert id="insertReply" parameterType="Reply">
+		INSERT INTO REPLY 
+		VALUES(SEQ_RID.NEXTVAL, #{bContent}, #{refBid}, #{bWriter}, SYSDATE, SYSDATE, DEFAULT)
+	</insert>
+	
+	<select id="selectReplyList" parameterType="_int" resultMap="replyResultSet">
+		SELECT *
+		FROM REPLY
+		WHERE REF_BID = #{bId}
+		ORDER BY RID DESC
+	</select>
+	
+	<resultMap type="Reply" id="replyResultSet">
+		<id property="rId" column="RID" />			
+		<result property="rContent" column="RCONTENT" />
+		<result property="refBid" column="REF_BID" />
+		<result property="rWriter" column="RWRITER" />
+		<result property="rCreateDate" column="R_CREATE_DATE" />
+		<result property="rModifyDate" column="R_MODIFY_DATE" />
+		<result property="rStatus" column="R_STATUS" />
+	</resultMap>
+	
+	<select id="selectTopList" resultMap="boardResultSet">
+		<![CDATA[
+			SELECT *
+			FROM (SELECT *
+				FROM BOARD
+				WHERE B_STATUS='Y'
+				ORDER BY BCOUNT DESC)
+			WHERE ROWNUM <= 5
+		]]>
+	</select>
+	
+	
+	
+	<!-- 
+	<select id="selectBoardDetail" parameterType="_int" resultMap="boardResultSet">
+		select bid, btype, btitle, bcontent, bwriter, m1.nickname as b_nickname, 
+				bcount, b_create_date, b_modify_date, b_status, 
+				rid, rcontent, ref_bid, m2.nickname as r_nickname, 
+				r_create_date, r_modify_date, r_status
+		from board
+			 join member m1 on(bWriter = m1.user_id)
+			 left join reply on(bid = ref_bid)
+			 left join member m2 on(rWriter = m2.user_id) 
+		where b_status = 'Y' and bid=#{bId}
+		order by rid desc
+	</select>
+	
+	<select id="selectSearchResultListCount" parameterType="SearchCondition" resultType="_int">
+		select count(*)
+		from board
+			 join member on(bwriter = user_id)
+		where b_status = 'Y'
+		<if test="writer != null">
+			and nickname = #{writer}
+		</if>
+		<if test="title != null">
+			and btitle like '%' || #{title} || '%'
+		</if>
+		<if test="content != null">
+			and bcontent like '%' || #{content} || '%'
+		</if>
+	</select>
+	
+	<select id="selectSearchResultList" parameterType="SearchCondition" resultMap="boardResultSet">
+		select *
+		from board
+			 join member on(bwriter = user_id)
+		where b_status = 'Y'
+		<choose>
+			<when test="writer != null">
+				and nickname = #{writer}
+			</when>
+			<when test="title != null">
+				and btitle like '%' || #{title} || '%'
+			</when>
+			<otherwise>
+				and bcontent like '%' || #{content} || '%'
+			</otherwise>
+		</choose>
+		order by bid desc
+	</select>
+	
+	 -->
+
+</mapper>
