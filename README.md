@@ -30,30 +30,6 @@ ___
 
 #### 2_SpringAjax (Ajax 공부)
 - **Java Sources**
-  - [Board](https://github.com/ehdqkd616/Spring_Study2/tree/master/MultiBoard_end/src/main/java/com/coderby/myapp/board)
-  - [Member](https://github.com/ehdqkd616/Spring_Study2/tree/master/MultiBoard_end/src/main/java/com/coderby/myapp/member)
-  - [Common](https://github.com/ehdqkd616/Spring_Study2/tree/master/MultiBoard_end/src/main/java/com/coderby/myapp/common)
-
-- **Views**
-  - [views](https://github.com/ehdqkd616/Spring_Study2/tree/master/MultiBoard_end/src/main/webapp/WEB-INF/views)
-
-- **SQL**
-  - [SQL_File](https://github.com/ehdqkd616/Spring_Study2/tree/master/MultiBoard_end/DOCUMENTS)
-
-- **설정 파일**
-  - [Dependency](https://github.com/ehdqkd616/Spring_Study2/blob/master/MultiBoard_end/pom.xml)
-  - [mvc-config](https://github.com/ehdqkd616/Spring_Study2/blob/master/MultiBoard_end/src/main/webapp/WEB-INF/spring/mvc-config.xml)
-  - [application-config](https://github.com/ehdqkd616/Spring_Study2/blob/master/MultiBoard_end/src/main/resources/spring/application-config.xml)
-  - [jdbc.properties](https://github.com/ehdqkd616/Spring_Study2/blob/master/MultiBoard_end/src/main/resources/database/jdbc.properties)
-  - [i18n](https://github.com/ehdqkd616/Spring_Study2/tree/master/MultiBoard_end/src/main/resources/i18n)
-  - [web.xml](https://github.com/ehdqkd616/Spring_Study2/blob/master/MultiBoard_end/src/main/webapp/WEB-INF/web.xml)
-
-___
-<br>
-
-
-#### MyMultiBoard (멀티게시판 연습2)
-- **Java Sources**
   - [Controller](https://github.com/ehdqkd616/Spring_Study3/tree/main/2_SpringAjax/src/main/java/com/kh/ajax/controller)
   - Model
     - [VO](https://github.com/ehdqkd616/Spring_Study3/tree/main/2_SpringAjax/src/main/java/com/kh/ajax/model/vo)
@@ -69,4 +45,3 @@ ___
 
 ___
 <br>
-
